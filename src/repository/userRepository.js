@@ -4,6 +4,7 @@ import UserAlreadyExistsException from '../exception/UserAlreadyExistException.j
 import { userStatus } from '../const/const.js';
 import { userModel } from '../schema/userSchema.js';
 import UnauthorizedException from '../exception/UnathorizedException.js';
+import LoginException from "../exception/LoginException.js";
 
 const add = async (content) => {
   try {
@@ -46,13 +47,24 @@ const confirmRegistration = async (id, token) => {
   const getByEmail = async (email) => {
     const result = await userModel.findOne({email:email, status: userStatus.active})
     if(!result) {
-      throw new UnauthorizedException('login failed', 100104);
+      /*throw new UnauthorizedException('login failed', 100104);*/
+      throw new LoginException('Email o password non valide', 100104);
     }
     return result.toJSON({versionKey:false})
+  }
+
+  const checkEmailExists = async (email) => {
+    const result = await userModel.findOne({email:email})
+    if (!result) {
+      return false
+    }
+    return true;
+
   }
   
   export default {
     add,
     confirmRegistration,
     getByEmail,
+    checkEmailExists
   }

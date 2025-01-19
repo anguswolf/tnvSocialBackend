@@ -1,7 +1,7 @@
 import {expect} from 'chai';
-import { activityStatus } from '../../src/const/const.js';
-import activityRepository from '../../src/repository/activityRepository.js';
-import { activityModel } from '../../src/schema/activitySchema.js';
+import { postStatus } from '../../src/const/const.js';
+import activityRepository from '../../src/repository/postRepository.js';
+import { postModel } from '../../src/schema/postSchema.js';
 import mongoose from 'mongoose';
 import sinon from 'sinon';
 
@@ -9,23 +9,23 @@ const objId = mongoose.Types.ObjectId;
 const sandbox = sinon.createSandbox();
 
 describe('----- Activity Repository Success Tests -----', () => {
-    it('it should set activity status to completed', async () => {
+    it('it should set post status to completed', async () => {
       const userId = new objId();
       const activity = {
         _id: new objId().toString(),
         name: 'olio di r2d2',
         description: 'controllare olio r2d2 dopo la passeggiata su Tatooine',
         dueDate: new Date(),
-        status: activityStatus.open,
+        status: postStatus.open,
         ownerId: userId,
       }
-      sandbox.stub(activityModel, 'findOneAndUpdate').callsFake(() => {
-        activity.status = activityStatus.completed
+      sandbox.stub(postModel, 'findOneAndUpdate').callsFake(() => {
+        activity.status = postStatus.completed
         activity.toJSON = () => activity
         return activity;
       });
       const completedActivity = await activityRepository.completedActivity(activity._id, userId)
-      expect(completedActivity.status).eq(activityStatus.completed);
+      expect(completedActivity.status).eq(postStatus.completed);
       expect(completedActivity.ownerId).eq(userId);
       expect(completedActivity._id.toString()).eq(activity._id.toString());
       expect(completedActivity.description).eq(activity.description);
@@ -40,11 +40,11 @@ describe('----- Activity Repository Failure Tests -----', () => {
       name: 'olio di r2d2',
       description: 'controllare olio r2d2 dopo la passeggiata su Tatooine',
       dueDate: new Date(),
-      status: activityStatus.open,
+      status: postStatus.open,
       ownerId: '',
     }
-    sandbox.stub(activityModel, 'findOneAndUpdate').callsFake(() => {
-      activity.status = activityStatus.completed
+    sandbox.stub(postModel, 'findOneAndUpdate').callsFake(() => {
+      activity.status = postStatus.completed
       activity.toJSON = () => activity
       return activity;
     });
@@ -60,11 +60,11 @@ describe('----- Activity Repository Failure Tests -----', () => {
       name: 'olio di r2d2',
       description: 'controllare olio r2d2 dopo la passeggiata su Tatooine',
       dueDate: new Date(),
-      status: activityStatus.open,
+      status: postStatus.open,
       ownerId: ''
     }
-    sandbox.stub(activityModel, 'findOneAndUpdate').callsFake(() => {
-      activity.status = activityStatus.completed
+    sandbox.stub(postModel, 'findOneAndUpdate').callsFake(() => {
+      activity.status = postStatus.completed
       activity.toJSON = () => activity
       return activity;
     });
@@ -80,10 +80,10 @@ describe('----- Activity Repository Failure Tests -----', () => {
       name: 'olio di r2d2',
       description: 'controllare olio r2d2 dopo la passeggiata su Tatooine',
       dueDate: new Date(),
-      status: activityStatus.open,
+      status: postStatus.open,
       ownerId: ''
     }
-    sandbox.stub(activityModel, 'findOneAndUpdate').callsFake(() => {
+    sandbox.stub(postModel, 'findOneAndUpdate').callsFake(() => {
       return null;
     });
     const completedActivity = await activityRepository.completedActivity(activity._id,userId)

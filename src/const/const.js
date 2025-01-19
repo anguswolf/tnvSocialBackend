@@ -1,9 +1,3 @@
-const activityStatus = {
-  open:'open',
-  deleted:'deleted',
-  completed:'completed',
-  archived:'archived'
-}
 
 const userStatus = {
   pending: 'pending',
@@ -78,7 +72,7 @@ const publicKey = '-----BEGIN PUBLIC KEY-----\n'+
 
 const mailConfig = {
   senderAddress: 'augusto.ciuccatosti@gmail.com',
-  smtpPassword: '****',
+  smtpPassword: 'rytfsyscqlstnhdl',
   subject: 'todolist registration',
   host: 'smtp.gmail.com',
   port: 465,
@@ -88,7 +82,6 @@ const mailConfig = {
 }
 
 export {
-  activityStatus,
   userStatus,
   privateKey,
   publicKey,

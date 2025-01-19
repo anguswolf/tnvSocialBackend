@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 const userSchema = new Schema({
     email: {type: String, index: { unique: true }},
     displayName: String,
+    displaySurname: String,
     password: String,
     salt: String,
     registrationToken: String,

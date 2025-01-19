@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import {expect, use} from 'chai';
 import mongoose from 'mongoose'
 import app from '../../server.js';
-import { activityStatus } from '../../src/const/const.js';
+import { postStatus } from '../../src/const/const.js';
 import CryptoUtils from '../../src/utils/cryptoUtils.js';
 import {userFixtures} from '../fixture/userFixtures.js'
 import {activityFixtures} from '../fixture/activityFixtures.js'
@@ -17,7 +17,7 @@ let activity;
 let listUserActivities = [];
 
 const buildPath = () => {
-    return '/activity/'; 
+    return '/post/';
 }
 //Mocha.process.removeListener("uncaughtException");
 

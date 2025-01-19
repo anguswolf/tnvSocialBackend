@@ -2,7 +2,7 @@ import * as chai from 'chai';
 import {expect, use} from 'chai';
 import mongoose from 'mongoose'
 import app from '../../server.js';
-import { activityStatus } from '../../src/const/const.js';
+import { postStatus } from '../../src/const/const.js';
 import CryptoUtils from '../../src/utils/cryptoUtils.js';
 import {userFixtures} from '../fixture/userFixtures.js'
 import {activityFixtures} from '../fixture/activityFixtures.js'
@@ -13,13 +13,13 @@ let user;
 let token;
 let activity;
 const buildPath = (value) => {
-    return '/activity/%%id%%/uncomplete'.replace('%%id%%', value); //Refactor in tutti i test
+    return '/post/%%id%%/uncomplete'.replace('%%id%%', value); //Refactor in tutti i test
 }
 
 describe('----- Uncomplete Activity Controller Tests -----', () => {
     beforeEach(async () => {
         user = await userFixtures.addUserInDb();
-        activity = await activityFixtures.addActivityToDb(user._id,{status: activityStatus.completed});
+        activity = await activityFixtures.addActivityToDb(user._id,{status: postStatus.completed});
         token = CryptoUtils.generateTokens(user);
     });
 
@@ -40,7 +40,7 @@ describe('----- Uncomplete Activity Controller Tests -----', () => {
             expect(error.message).eq('ValidationError: "id" with value "IdNonValido" fails to match the required pattern: /^[a-fA-F0-9]{24}$/')
         });
 
-        it('it should return 404 when activity does not exists', async () => {
+        it('it should return 404 when post does not exists', async () => {
             const res = await request.execute(app)
             .patch(buildPath(new mongoose.Types.ObjectId().toString()))
             .set('Authorization', 'Bearer ' + token.accessToken)
@@ -85,10 +85,10 @@ describe('----- Uncomplete Activity Controller Tests -----', () => {
             expect(res.body._id).eq(activity._id);
             expect(res.body.name).eq(activity.name);
             expect(res.body.description).eq(activity.description);
-            expect(res.body.status).eq(activityStatus.open);
+            expect(res.body.status).eq(postStatus.open);
             const activityFromDb = await activityFixtures.getFromDb(activity._id);
             expect(activityFromDb).not.null;
-            expect(activityFromDb.status).eq(activityStatus.open);
+            expect(activityFromDb.status).eq(postStatus.open);
 
            
         });

@@ -1,9 +1,9 @@
-import activityNormalizer from '../../normalizer/activityNormalizer.js';
-import {archiveActivity} from '../../service/activityService.js'
+import activityNormalizer from '../../normalizer/postNormalizer.js';
+import {completeActivity} from '../../service/postService.js'
 
 export default async (req, res) => {
     try {
-        const activity = await archiveActivity(req.params['id'], req.userId)
+        const activity = await completeActivity(req.params['id'], req.userId)
         if (activity) {
             res.status(200).json(activityNormalizer(activity))       
         }else {
