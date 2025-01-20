@@ -4,6 +4,7 @@
 import createPostValidator from '../validator/post/createValidator.js'
 import createUserValidator from '../validator/user/createValidator.js'
 import loginValidator from '../validator/user/loginValidator.js'
+import updatePasswordValidator from "../validator/user/updatePasswordValidator.js";
 
 /**
  * POST CONTROLLERS
@@ -23,13 +24,19 @@ import loginController from './user/loginController.js';
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
 import {uploadFileToMongoMiddleware} from "../middleware/uploadFileToMongoMiddleware.js";
 
+import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
+import updateUserPasswordController from "./user/updateUserPasswordController.js";
+
 
 const setup = (app) => {
 
     app.post('/user' ,createUserValidator, createUserController);
+    app.post('/user/resetPassword' , updateTokenAndSendMailController);
+
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
+    app.patch('/user/:id/updatePassword/:registrationToken',updatePasswordValidator, updateUserPasswordController);
+
     app.post('/user/login', loginValidator, loginController)
-    app.get('/user/:id/resetpassword/:registrationToken',checkUserMailController);
 
     app.get('/post/page/:pageId', listPostController);
     app.get('/post/:id', retrievePostController);

@@ -19,49 +19,25 @@ const buildRegistrationLink = (id, token) => {
   return `http://localhost:8000/user/${id}/confirm/${encodeURIComponent(token)}`
 }
 
-const sendRegistrationMail = async (email, link) => {
-	const senderAddress = mailConfig.senderAddress;
-	const subject = mailConfig.subject;
-	const body = `Open this link to complete registration ${link}`;
-	const transport = {
-	  host: mailConfig.host,
-	  port: mailConfig.port,
-	  secure: mailConfig.secure,
-	  auth: {
-		user: senderAddress,
-		pass: mailConfig.smtpPassword, //creata ad hoc la password per le APP di Google
-	  },
-	};
-	const mailData = {
-	  from: `"todolist service" <${senderAddress}>`,
-	  subject: subject,
-	  text: body,
-	  to: email,
-	  html: mailConfig.html,
-	};
-	return await mailer.createTransport(transport).sendMail(mailData);
-  }
-
-
-const resetPassword = async (content) => {
-  const  {password, salt} = cryptoUtils.hashPassword(content.password)
-  content.resetPasswordToken = cryptoUtils.generateUniqueCode(10)
-  const result =  await userRepo.getByEmail(content.email);
-  await sendResetPasswordMail(content.email,
-    buildResetPasswordLink(result._id, content.resetPasswordToken))
+const updateTokenAndSendMail = async (content) => {
+	let result
+	if (userRepo.checkEmailExists(content.email)) {
+		  content.updatingToken = cryptoUtils.generateUniqueCode(10)
+		  result =  await userRepo.update(content);
+		  await sendRegistrationMail(content.email,
+			buildPasswordUpdatingLink(result._id, content.updatingToken))
+	}
   return result;
 }
 
-
-const buildResetPasswordLink = (id, token) => {
-  return `http://localhost:8000/user/${id}/resetpassword/${encodeURIComponent(token)}`
+const buildPasswordUpdatingLink = (id, token) => {
+  return `http://localhost:5173/user/${id}/updatepassword/${encodeURIComponent(token)}`
 }
 
-
-  const sendResetPasswordMail = async (email, link) => {
+const sendRegistrationMail = async (email, link) => {
 	const senderAddress = mailConfig.senderAddress;
 	const subject = mailConfig.subject;
-	const body = `Open this link to complete registration ${link}`;
+	const body = `Open this link to complete password reset ${link}`;
 	const transport = {
 	  host: mailConfig.host,
 	  port: mailConfig.port,
@@ -80,9 +56,17 @@ const buildResetPasswordLink = (id, token) => {
 	};
 	return await mailer.createTransport(transport).sendMail(mailData);
   }
-  
+
   const confirmRegistration = async (id, token) => {
 	return await userRepo.confirmRegistration(id, token);
+  }
+
+  const updateUserPassword = async (content, id, token) => {
+	console.log(content.body)
+	const  {password, salt} = cryptoUtils.hashPassword(content.body.password)
+	  content.password = password;
+	  content.salt = salt;
+	return await userRepo.updateUserPassword(content, id, token);
   }
 
   const login = async (email, password) => {
@@ -99,8 +83,7 @@ const buildResetPasswordLink = (id, token) => {
   }
 
   const checkEmailExists = async (email) => {
-	const result = await userRepo.checkEmailExists(email);
-	return result;
+	  return await userRepo.checkEmailExists(email);
   }
   
   export {
@@ -108,4 +91,6 @@ const buildResetPasswordLink = (id, token) => {
 	confirmRegistration,
 	login,
 	checkEmailExists,
+	  updateUserPassword,
+	  updateTokenAndSendMail
   }

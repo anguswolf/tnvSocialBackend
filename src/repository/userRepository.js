@@ -18,6 +18,19 @@ const add = async (content) => {
   }
 }
 
+const update = async (content) => {
+  try {
+    const res = await userModel.findOneAndUpdate(
+        {email: content.email},
+        {registrationToken: content.updatingToken},
+        { new: true}
+    )
+    return res.toJSON({versionKey:false})
+  } catch (e) {
+        throw new MongoInternalException(e.message, 100101)
+  }
+}
+
 const confirmRegistration = async (id, token) => {
     try {
       const result = await userModel.findOneAndUpdate(
@@ -44,7 +57,43 @@ const confirmRegistration = async (id, token) => {
     }
   }
 
+  const updateUserPassword = async (content, id, token) => {
+    try {
+          //console.log(content.body)
+      const result = await userModel.findOneAndUpdate(
+        {
+          /*_id: id,
+          registrationToken: token,*/
+          _id: content.body.userId,
+          registrationToken: content.body.registrationToken,
+        },
+        {
+          status:userStatus.active,
+          registrationToken: null,
+          password: content.password,
+          salt: content.salt,
+        },
+        {new: true}
+      )
+      if(!result) {
+        throw new NotFoundException('user not found', 100102)
+      }
+
+      if(result.status === userStatus.active) {
+        return result.toJSON({versionKey:false})
+      }
+
+    } catch (e) {
+      if(e.code === 100102) {
+        throw e
+      }
+      throw new MongoInternalException(e.message, 100103)
+    }
+  }
+
+
   const getByEmail = async (email) => {
+
     const result = await userModel.findOne({email:email, status: userStatus.active})
     if(!result) {
       /*throw new UnauthorizedException('login failed', 100104);*/
@@ -64,7 +113,9 @@ const confirmRegistration = async (id, token) => {
   
   export default {
     add,
+    update,
     confirmRegistration,
     getByEmail,
-    checkEmailExists
+    checkEmailExists,
+    updateUserPassword
   }
