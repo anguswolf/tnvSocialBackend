@@ -14,8 +14,14 @@ const addPost = async (data) => {
 		return await postRepo.addPost(content)
 }
 
+const toggleLike = async (data) => {
+		const content = data
+		return await postRepo.toggleLike(content)
+}
+
 export {
  	retrievePost,
 	addPost,
 	listPosts,
+	toggleLike,
 }

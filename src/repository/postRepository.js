@@ -10,6 +10,52 @@ const addPost = async (data) => {
   return result.toJSON({versionKey: false})
 }
 
+const toggleLike = async (data) => {
+  try {
+    console.log(data)
+    const postId = data.postId;
+    const userId = data.userId;
+
+    const post = await postModel.findById(postId);
+    if (!post) {
+      return { success: false, message: "Post not found" };
+    }
+
+    const hasLiked = post.likes.includes(userId);
+
+    const operation = hasLiked
+        ? {
+            $pull: { likes: userId },
+            $inc: { likesCount: -1 },
+          }
+        : {
+          $addToSet: {likes: userId},
+          $inc: {likesCount: 1},
+          }
+
+    const result = await postModel.updateOne(
+        { _id: postId },
+        operation);
+
+    console.log(result)
+    if (result.modifiedCount > 0) {
+      return {
+        success: true,
+        message: hasLiked ? "Like removed successfully" : "Like added successfully",
+      };
+    } else {
+      return {
+        success: false,
+        message: "Operation failed, no changes were made",
+      };
+    }
+  } catch (error) {
+    console.error("Error toggling like:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+
 const retrievePost = async (id) => {
   const res = await postModel
       .findById(id)
@@ -51,4 +97,5 @@ export default {
   addPost,
   retrievePost,
   listPosts,
+  toggleLike
 }

@@ -8,6 +8,16 @@ const postSchema = new Schema({
         data: Buffer,          // Dati binari
         contentType: String,   // Tipo MIME (es. 'image/jpeg')
     },
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "users", // Riferimento alla collezione degli utenti
+        },
+    ],
+    likesCount: {
+        type: Number,
+        default: 0, // Conteggio iniziale dei "mi piace"
+    },
   },
   {
     timestamps: {
@@ -17,5 +27,6 @@ const postSchema = new Schema({
   }
 );
 
-postSchema.index({ name: 1 });
+postSchema.index({ title: 1 });
+postSchema.index({ likes: 1 });
 export const postModel = mongoose.model('posts', postSchema);

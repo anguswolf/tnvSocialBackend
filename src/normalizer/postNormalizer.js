@@ -7,6 +7,8 @@ const get = (post) => {
     createdAt: post.createdAt,
     ownerId: post.ownerId,
     ownerName: post.ownerName,
+    likes: post.likes,
+    likesCount: post.likesCount,
   }
   return out
 }
