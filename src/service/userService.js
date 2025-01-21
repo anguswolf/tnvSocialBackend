@@ -61,12 +61,12 @@ const sendRegistrationMail = async (email, link) => {
 	return await userRepo.confirmRegistration(id, token);
   }
 
-  const updateUserPassword = async (content, id, token) => {
+  const updateUserPassword = async (content) => {
 	console.log(content.body)
 	const  {password, salt} = cryptoUtils.hashPassword(content.body.password)
 	  content.password = password;
 	  content.salt = salt;
-	return await userRepo.updateUserPassword(content, id, token);
+	return await userRepo.updateUserPassword(content);
   }
 
   const login = async (email, password) => {

@@ -57,13 +57,11 @@ const confirmRegistration = async (id, token) => {
     }
   }
 
-  const updateUserPassword = async (content, id, token) => {
+  const updateUserPassword = async (content) => {
     try {
           //console.log(content.body)
       const result = await userModel.findOneAndUpdate(
         {
-          /*_id: id,
-          registrationToken: token,*/
           _id: content.body.userId,
           registrationToken: content.body.registrationToken,
         },

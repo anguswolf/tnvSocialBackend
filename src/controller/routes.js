@@ -31,11 +31,9 @@ import updateUserPasswordController from "./user/updateUserPasswordController.js
 const setup = (app) => {
 
     app.post('/user' ,createUserValidator, createUserController);
-    app.post('/user/resetPassword' , updateTokenAndSendMailController);
-
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
-    app.patch('/user/:id/updatePassword/:registrationToken',updatePasswordValidator, updateUserPasswordController);
-
+    app.post('/user/resetPassword' , updateTokenAndSendMailController);
+    app.patch('/user/updatePassword/',updatePasswordValidator, updateUserPasswordController);
     app.post('/user/login', loginValidator, loginController)
 
     app.get('/post/page/:pageId', listPostController);
