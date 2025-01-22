@@ -62,8 +62,7 @@ const sendRegistrationMail = async (email, link) => {
   }
 
   const updateUserPassword = async (content) => {
-	console.log(content.body)
-	const  {password, salt} = cryptoUtils.hashPassword(content.body.password)
+	const  {password, salt} = cryptoUtils.hashPassword(content.password)
 	  content.password = password;
 	  content.salt = salt;
 	return await userRepo.updateUserPassword(content);

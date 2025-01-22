@@ -32,10 +32,10 @@ import addCommentController from "./comment/addCommentController.js";
 
 const setup = (app) => {
     /* USER API */
-    app.post('/user' ,createUserValidator, createUserController);
-    app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
-    app.post('/user/resetPassword' , updateTokenAndSendMailController);
-    app.patch('/user/updatePassword/',updatePasswordValidator, updateUserPasswordController);
+    app.post('/user', createUserValidator, createUserController);
+    app.get('/user/:id/confirm/:registrationToken', checkUserMailController);
+    app.post('/user/resetPassword', updateTokenAndSendMailController);
+    app.patch('/user/:id/updatePassword/', updatePasswordValidator, updateUserPasswordController);
     app.post('/user/login', loginValidator, loginController)
 
     /* POST API */
@@ -56,7 +56,6 @@ const setup = (app) => {
                 type: err.type,
                 message: err.error.toString()
             })
-
         } else {
             next(err);
         }

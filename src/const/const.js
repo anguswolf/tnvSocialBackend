@@ -81,9 +81,14 @@ const mailConfig = {
 
 }
 
+const postConfig = {
+  postPerPage: 5,
+}
+
 export {
   userStatus,
   privateKey,
   publicKey,
   mailConfig,
+  postConfig,
 }

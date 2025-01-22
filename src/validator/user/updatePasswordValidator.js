@@ -5,7 +5,7 @@ const validator = validation.createValidator({passError:true});
 
 const schema = Joi.object({
 
-    userId: Joi.string().required(),
+    //userId: Joi.string().required(),
     registrationToken: Joi.string().required(),
     password: Joi.string()
         .min(8)

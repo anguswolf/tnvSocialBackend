@@ -1,5 +1,6 @@
 import { postModel } from '../schema/postSchema.js';
 import {userModel} from "../schema/userSchema.js";
+import {postConfig} from "../const/const.js";
 
 const addPost = async (data) => {
   data.ownerId = data.userId;
@@ -19,7 +20,7 @@ const retrievePost = async (id) => {
 }
 
 const listPosts = async (userId, pageId= 1) => {
-  const pageSize = 5; // Numero di post per pagina
+  const pageSize = postConfig.postPerPage; // Numero di post per pagina
   const skip = (pageId - 1) * pageSize;
   let res;
   try {
@@ -80,11 +81,6 @@ const toggleLike = async (data) => {
 
 
 
-
-
-
-
-
 const addComment = async (data) => {
   try {
     const { authorId, textComment, postId } = data;
@@ -105,6 +101,7 @@ const addComment = async (data) => {
               textComment: textComment.trim(),
             },
           },
+          $inc: {commentsCount: 1},
         }
     );
     console.log("Update Result:", result);
