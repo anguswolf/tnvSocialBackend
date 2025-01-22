@@ -5,6 +5,7 @@ import createPostValidator from '../validator/post/createValidator.js'
 import createUserValidator from '../validator/user/createValidator.js'
 import loginValidator from '../validator/user/loginValidator.js'
 import updatePasswordValidator from "../validator/user/updatePasswordValidator.js";
+import createCommentValidator from "../validator/comment/createCommentValidator.js";
 
 /**
  * POST CONTROLLERS
@@ -47,7 +48,7 @@ const setup = (app) => {
     app.post('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController);
 
     /* COMMENT API */
-    app.post('/post/:id/comment/',checkAuthorizationMiddleware, addCommentController);
+    app.post('/post/:id/comment/',checkAuthorizationMiddleware, createCommentValidator, addCommentController);
 
     //definire app.use dopo la route app.post, app.patch
     app.use((err, req, res, next) => {
