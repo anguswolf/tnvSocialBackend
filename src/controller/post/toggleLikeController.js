@@ -2,10 +2,9 @@ import {toggleLike} from '../../service/postService.js'
 
 export default async (req,res) => {
     try {
-        const data = {...req.body, userId: req.userId};
-
+        const postId = req.params.id; // ID del post
+        const data = {...req.body, userId: req.userId, postId: postId};
         const result = await toggleLike(data) // promise
-        /*res.status(201).json(postNormalizer(result));*/
         res.status(201).json(result);
     } catch (error) {
         console.log(error.message + " - Response Status: " + error.status);

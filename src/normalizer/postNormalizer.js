@@ -9,6 +9,8 @@ const get = (post) => {
     ownerName: post.ownerName,
     likes: post.likes,
     likesCount: post.likesCount,
+    comments: post.comments,
+    commentsCount: post.commentsCount,
   }
   return out
 }

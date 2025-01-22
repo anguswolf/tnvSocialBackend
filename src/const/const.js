@@ -73,7 +73,7 @@ const publicKey = '-----BEGIN PUBLIC KEY-----\n'+
 const mailConfig = {
   senderAddress: 'augusto.ciuccatosti@gmail.com',
   smtpPassword: 'rytfsyscqlstnhdl',
-  subject: 'todolist registration',
+  subject: 'Social Tnv User Registration',
   host: 'smtp.gmail.com',
   port: 465,
   secure: true, // true for 465, false for other ports

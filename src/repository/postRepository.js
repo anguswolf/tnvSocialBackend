@@ -1,13 +1,37 @@
-import ForbiddenException from '../exception/ForbiddenException.js';
-import NotFoundException from '../exception/NotFoundException.js';
 import { postModel } from '../schema/postSchema.js';
-import {c} from "sinon/lib/sinon/spy-formatters.js";
 import {userModel} from "../schema/userSchema.js";
 
 const addPost = async (data) => {
   data.ownerId = data.userId;
   const result = await new postModel(data).save()
   return result.toJSON({versionKey: false})
+}
+
+const retrievePost = async (id) => {
+  const res = await postModel
+      .findById(id)
+      .populate('ownerId', 'displayName displaySurname'); // Recupera i campi `name` e `email` dell'utente
+
+  if (!res) {
+    return null; // Nessun post trovato
+  }
+  return res.toJSON({ versionKey: false });
+}
+
+const listPosts = async (userId, pageId= 1) => {
+  const pageSize = 5; // Numero di post per pagina
+  const skip = (pageId - 1) * pageSize;
+  let res;
+  try {
+    res = await postModel.find({})
+        .populate('ownerId', 'displayName displaySurname')
+        .skip(skip)
+        .limit(pageSize)
+        .exec();
+  }catch(err) {
+    console.log(err);
+  }
+  return res?.map(item => item.toJSON({versionKey:false}));
 }
 
 const toggleLike = async (data) => {
@@ -22,16 +46,15 @@ const toggleLike = async (data) => {
     }
 
     const hasLiked = post.likes.includes(userId);
-
     const operation = hasLiked
         ? {
-            $pull: { likes: userId },
-            $inc: { likesCount: -1 },
-          }
+          $pull: { likes: userId },
+          $inc: { likesCount: -1 },
+        }
         : {
           $addToSet: {likes: userId},
           $inc: {likesCount: 1},
-          }
+        }
 
     const result = await postModel.updateOne(
         { _id: postId },
@@ -56,46 +79,53 @@ const toggleLike = async (data) => {
 }
 
 
-const retrievePost = async (id) => {
-  const res = await postModel
-      .findById(id)
-      .populate('ownerId', 'displayName displaySurname'); // Recupera i campi `name` e `email` dell'utente
 
-  if (!res) {
-    return null; // Nessun post trovato
-  }
-  return res.toJSON({ versionKey: false });
-}
 
-const listPosts = async (userId, pageId= 1) => {
-  const pageSize = 3; // Numero di post per pagina
-  const skip = (pageId - 1) * pageSize; // Calcola quanti documenti saltare
-  let res;
+
+
+
+
+const addComment = async (data) => {
   try {
-    res = await postModel.find({})
-        .populate('ownerId', 'displayName displaySurname')
-        .skip(skip)
-        .limit(pageSize)
-        .exec();
+    const { authorId, textComment, postId } = data;
 
-  }catch(err) {
-    console.log(err);
+    console.log(authorId, textComment, postId);
+    const author = await userModel.findOne({_id: authorId})
+    const authorName = (author.toJSON({versionKey:false})).displayName
+    const authorSurname = (author.toJSON({versionKey:false})).displaySurname
+
+    const result = await postModel.updateOne(
+        { _id: postId },
+        {
+          $push: {
+            comments: {
+              authorId: authorId,
+              authorName:  authorName, //TODO check
+              authorSurname:  authorSurname, //TODO check
+              textComment: textComment.trim(),
+            },
+          },
+        }
+    );
+    console.log("Update Result:", result);
+
+    // Controlla l'esito dell'operazione
+    if (result.modifiedCount > 0) {
+      return { success: true, message: "Comment added successfully" };
+    } else {
+      return { success: false, message: "Post not found or comment not added" };
+    }
+  } catch (error) {
+    console.error("Error in addComment:", error);
+    return { success: false, message: "Internal server error", error: error.message };
   }
+};
 
-  //console.log(res?.map(item => item.toJSON({versionKey:false})))
-  //return post?.toJSON({versionKey:false}) || null
-  return res?.map(item => item.toJSON({versionKey:false}));
-}
-
-/*const _changeStatus = async (id, userId, status) => {
-  if(!(id && userId)){return null}
-  const activity = await postModel.findOneAndUpdate({_id:id,ownerId:userId},{$set:{status}},{upsert:false,new:true})
-  return activity?.toJSON({versionKey:false}) || null
-}*/
 
 export default {
   addPost,
   retrievePost,
   listPosts,
-  toggleLike
+  toggleLike,
+  addComment,
 }

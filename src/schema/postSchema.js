@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import {now, Schema} from "mongoose";
 import mongoose from "mongoose";
 const postSchema = new Schema({
     title: String,
@@ -17,6 +17,35 @@ const postSchema = new Schema({
     likesCount: {
         type: Number,
         default: 0, // Conteggio iniziale dei "mi piace"
+    },
+    comments: [
+        {
+            authorId: {
+                type: Schema.Types.ObjectId,
+                ref: "users", // Riferimento alla collezione degli utenti
+                required: true,
+            },
+            authorName: {
+                type: String,
+                required: true,
+            },
+            authorSurname: {
+                type: String,
+                required: true,
+            },
+            textComment: {
+                type: String,
+                required: true,
+            },
+            createdAt: {
+                type: Date,
+                default: Date.now, // Imposta automaticamente la data di creazione
+            },
+        },
+    ],
+    commentsCount: {
+        type: Number,
+        default: 0, // Conteggio iniziale dei "commenti"
     },
   },
   {

@@ -27,10 +27,10 @@ import {uploadFileToMongoMiddleware} from "../middleware/uploadFileToMongoMiddle
 import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
 import updateUserPasswordController from "./user/updateUserPasswordController.js";
 import toggleLikeController from "./post/toggleLikeController.js";
+import addCommentController from "./comment/addCommentController.js";
 
 
 const setup = (app) => {
-
     /* USER API */
     app.post('/user' ,createUserValidator, createUserController);
     app.get('/user/:id/confirm/:registrationToken',checkUserMailController);
@@ -39,15 +39,15 @@ const setup = (app) => {
     app.post('/user/login', loginValidator, loginController)
 
     /* POST API */
+    app.post('/post',checkAuthorizationMiddleware, uploadFileToMongoMiddleware('image'), createPostValidator, addPostController);
     app.get('/post/:id', retrievePostController);
     app.get('/post/page/:pageId', listPostController);
-    app.post('/post',checkAuthorizationMiddleware, uploadFileToMongoMiddleware('image'), createPostValidator, addPostController);
 
     /* LIKE API */
-    app.post('/post/toggleLike',checkAuthorizationMiddleware, toggleLikeController);
+    app.post('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController);
 
-
-
+    /* COMMENT API */
+    app.post('/post/:id/comment/',checkAuthorizationMiddleware, addCommentController);
 
     //definire app.use dopo la route app.post, app.patch
     app.use((err, req, res, next) => {

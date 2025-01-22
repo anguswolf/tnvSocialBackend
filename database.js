@@ -1,13 +1,24 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-const dbName = 'todolist'
+/*
 const user='augustociuccatosti'
-
 const password='pippocalogero'
+const cluster = 'ClusterToDoList'
+const dbName = 'todolist'
+*/
+/*const connectionUrl = `mongodb+srv://
+${user}:${password}
+@clustertodolist.lc6tm.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=ClusterToDoList'`*/
+
+const user='tnvsocialuser'
+const password='paolinopaperino'
+const cluster = 'ClusterTnvSocialApp'
+const dbName = 'socialAppDb'
 
 const connectionUrl = `mongodb+srv://
 ${user}:${password}
-@clustertodolist.lc6tm.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=ClusterToDoList'`
+@clustertnvsocialapp.g4vgd.mongodb.net/${dbName}?retryWrites=true&w=majority&appName=${cluster}'`
+
 
 const connect = async () => {
   try {
