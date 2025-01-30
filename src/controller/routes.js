@@ -29,6 +29,8 @@ import updateTokenAndSendMailController from "./user/updateTokenAndSendMailContr
 import updateUserPasswordController from "./user/updateUserPasswordController.js";
 import toggleLikeController from "./post/toggleLikeController.js";
 import addCommentController from "./comment/addCommentController.js";
+import updateCommentController from "./comment/updateCommentController.js";
+import removeCommentController from "./comment/removeCommentController.js";
 
 
 const setup = (app) => {
@@ -49,6 +51,8 @@ const setup = (app) => {
 
     /* COMMENT API */
     app.post('/post/:id/comment/',checkAuthorizationMiddleware, createCommentValidator, addCommentController);
+    /*app.patch('/post/:id/comment/:commentId/',checkAuthorizationMiddleware /!*updateActivityValidator*!/, updateCommentController); //TODO updateCommentValidator*/
+    app.delete('/post/:id/comment/:commentId',checkAuthorizationMiddleware, removeCommentController);
 
     //definire app.use dopo la route app.post, app.patch
     app.use((err, req, res, next) => {

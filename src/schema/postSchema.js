@@ -11,18 +11,18 @@ const postSchema = new Schema({
     likes: [
         {
             type: Schema.Types.ObjectId,
-            ref: "users", // Riferimento alla collezione degli utenti
+            ref: "users",
         },
     ],
     likesCount: {
         type: Number,
-        default: 0, // Conteggio iniziale dei "mi piace"
+        default: 0,
     },
     comments: [
         {
             authorId: {
                 type: Schema.Types.ObjectId,
-                ref: "users", // Riferimento alla collezione degli utenti
+                ref: "users",
                 required: true,
             },
             authorName: {
