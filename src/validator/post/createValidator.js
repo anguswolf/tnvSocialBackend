@@ -22,23 +22,22 @@ export default [
     validator.body(
         Joi.object().keys({
             title: Joi.string()
-                .max(100) // Lunghezza massima 100 caratteri
+                .max(100)
                 .required()
                 .messages({
                     'string.max': 'Il titolo può contenere al massimo 100 caratteri.',
                     'any.required': 'Il titolo è obbligatorio.',
                 }),
             text: Joi.string()
-                .max(2000) // Lunghezza massima 2000 caratteri
+                .max(2000)
                 .required()
                 .messages({
                     'string.max': 'Il corpo del testo può contenere al massimo 2000 caratteri.',
                     'any.required': 'Il corpo del testo è obbligatorio.',
                 }),
             image: Joi.string()
-                .pattern(/\.(jpeg|jpg|png)$/i) // Formati accettati: JPEG e PNG
+                .pattern(/\.(jpeg|jpg|png)$/i)
                 .custom((value, helpers) => {
-                    // Controllo personalizzato per la dimensione dell'immagine
                     const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
                     // Simulazione del controllo della dimensione
                     const mockFileSize = getFileSize(value); // Funzione da implementare

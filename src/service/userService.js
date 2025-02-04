@@ -16,7 +16,7 @@ const register = async (content) => {
 }
 
 const buildRegistrationLink = (id, token) => {
-  return `http://localhost:8000/user/${id}/confirm/${encodeURIComponent(token)}`
+  return `http://localhost:5173/user/${id}/confirm/${encodeURIComponent(token)}`
 }
 
 const updateTokenAndSendMail = async (content) => {
@@ -37,7 +37,7 @@ const buildPasswordUpdatingLink = (id, token) => {
 const sendRegistrationMail = async (email, link) => {
 	const senderAddress = mailConfig.senderAddress;
 	const subject = mailConfig.subject;
-	const body = `Open this link to complete password reset ${link}`;
+	const body = `Open this link to register ${link}`;
 	const transport = {
 	  host: mailConfig.host,
 	  port: mailConfig.port,

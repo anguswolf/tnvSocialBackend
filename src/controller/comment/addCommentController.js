@@ -6,6 +6,7 @@ export default async (req,res) => {
         /*console.log(req.body);*/
         const postId = req.params.id; // ID del post
         const data = {...req.body, authorId: req.userId, postId: postId};
+        console.log(data);
         const result = await addComment(data) // promise
         res.status(result.success ? 200 : 400).json(result);
     } catch (error) {

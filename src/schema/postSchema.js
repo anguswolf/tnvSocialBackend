@@ -1,12 +1,11 @@
-import {now, Schema} from "mongoose";
+import {Schema} from "mongoose";
 import mongoose from "mongoose";
 const postSchema = new Schema({
     title: String,
     text: String,
     ownerId: {type: Schema.Types.ObjectId, ref: 'users', required: true, default: null},
     image: {
-        data: Buffer,          // Dati binari
-        contentType: String,   // Tipo MIME (es. 'image/jpeg')
+        type: String,
     },
     likes: [
         {
@@ -18,34 +17,9 @@ const postSchema = new Schema({
         type: Number,
         default: 0,
     },
-    comments: [
-        {
-            authorId: {
-                type: Schema.Types.ObjectId,
-                ref: "users",
-                required: true,
-            },
-            authorName: {
-                type: String,
-                required: true,
-            },
-            authorSurname: {
-                type: String,
-                required: true,
-            },
-            textComment: {
-                type: String,
-                required: true,
-            },
-            createdAt: {
-                type: Date,
-                default: Date.now, // Imposta automaticamente la data di creazione
-            },
-        },
-    ],
     commentsCount: {
         type: Number,
-        default: 0, // Conteggio iniziale dei "commenti"
+        default: 0,
     },
   },
   {

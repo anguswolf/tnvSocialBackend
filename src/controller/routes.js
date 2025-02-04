@@ -23,14 +23,13 @@ import loginController from './user/loginController.js';
  * MIDDLEWARES
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
-import {uploadFileToMongoMiddleware} from "../middleware/uploadFileToMongoMiddleware.js";
-
 import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
 import updateUserPasswordController from "./user/updateUserPasswordController.js";
 import toggleLikeController from "./post/toggleLikeController.js";
 import addCommentController from "./comment/addCommentController.js";
 import updateCommentController from "./comment/updateCommentController.js";
 import removeCommentController from "./comment/removeCommentController.js";
+import uploadFileToServer from "../middleware/uploadFileToServer.js";
 
 
 const setup = (app) => {
@@ -42,19 +41,18 @@ const setup = (app) => {
     app.post('/user/login', loginValidator, loginController)
 
     /* POST API */
-    app.post('/post',checkAuthorizationMiddleware, uploadFileToMongoMiddleware('image'), createPostValidator, addPostController);
+    app.post('/post',checkAuthorizationMiddleware, uploadFileToServer.single('image'), createPostValidator, addPostController);
     app.get('/post/:id', retrievePostController);
     app.get('/post/page/:pageId', listPostController);
 
     /* LIKE API */
-    app.post('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController);
+    app.post('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController); //TODO fare tabella separata per i like
 
     /* COMMENT API */
     app.post('/post/:id/comment/',checkAuthorizationMiddleware, createCommentValidator, addCommentController);
-    /*app.patch('/post/:id/comment/:commentId/',checkAuthorizationMiddleware /!*updateActivityValidator*!/, updateCommentController); //TODO updateCommentValidator*/
+    app.patch('/post/:id/comment/:commentId/',checkAuthorizationMiddleware, createCommentValidator, updateCommentController); //TODO aggiornare POSTID??  contatore ???
     app.delete('/post/:id/comment/:commentId',checkAuthorizationMiddleware, removeCommentController);
 
-    //definire app.use dopo la route app.post, app.patch
     app.use((err, req, res, next) => {
         if (err && err.error && err.error.isJoi) {
             res.status(400).json({

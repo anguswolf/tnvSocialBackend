@@ -3,6 +3,12 @@ const userStatus = {
   pending: 'pending',
   active: 'active',
 }
+
+const postConfig = {
+  postPerPage: 3,
+}
+
+
 const privateKey = '-----BEGIN RSA PRIVATE KEY-----\n'+
 'MIIJKQIBAAKCAgEA50xRcFErVdUtcLZBKObOO8GptqJCAIlTvYdwF/imz5rdViic\n'+
 'O0rNzzRoRbbPBQkisYsWAwZcND4ygsnUANtgjFGKozp1lfVJsuLkz/HrRoFNFaH7\n'+
@@ -79,10 +85,6 @@ const mailConfig = {
   secure: true, // true for 465, false for other ports
   html: '',
 
-}
-
-const postConfig = {
-  postPerPage: 5,
 }
 
 export {

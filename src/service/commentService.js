@@ -1,16 +1,17 @@
 import postRepo from '../repository/postRepository.js'
+import commentRepo from "../repository/commentRepository.js";
 
 const addComment = async (data) => {
 		const content = data
-		return await postRepo.addComment(content)
+		return await commentRepo.addComment(content)
 }
 
 const updateComment = async (postId, commentId, params) => {
-	return await postRepo.updateComment(postId, commentId, params)
+	return await commentRepo.updateComment(postId, commentId, params)
 }
 
 const removeComment = async (postId, commentId) => {
-	return postRepo.removeComment(postId, commentId)
+	return commentRepo.removeComment(postId, commentId)
 }
 
 export {

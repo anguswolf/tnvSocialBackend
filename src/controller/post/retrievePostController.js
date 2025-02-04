@@ -2,11 +2,10 @@ import {retrievePost} from '../../service/postService.js'
 import postNormalizer from '../../normalizer/postNormalizer.js';
 
 export default async (req, res) => {
-    console.log(req.params['id']);
     const  postId = req.params['id'];
     const post = await retrievePost(postId)
-    
     if (post) {
+        console.log(post)
         res.status(200).json(postNormalizer(post))
         /*res.status(200).json(post)*/
     } else {
