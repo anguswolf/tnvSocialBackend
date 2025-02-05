@@ -1,5 +1,5 @@
 import {listPosts} from '../../service/postService.js'
-import postNormalizer,{list} from '../../normalizer/postNormalizer.js';
+import {list} from '../../normalizer/postNormalizer.js';
 
 
 export default async (req, res) => {

@@ -1,4 +1,4 @@
-import {toggleLike} from '../../service/postService.js'
+import {toggleLike} from "../../service/likeService.js";
 
 export default async (req,res) => {
     try {

@@ -1,6 +1,6 @@
 const normalizePost = (data) => {
-  return {
-    id: data.post._id, // Normalizza l'ObjectId in stringa
+    return {
+    id: data.post._id,
     title: data.post.title,
     text: data.post.text,
     image: data.post.image,
@@ -13,8 +13,12 @@ const normalizePost = (data) => {
     },
     likes: {
       count: data.post.likesCount,
-      users: data.post.likes.map(like => like.toString()), // Normalizza gli ObjectId
-    },
+      list: data.likes.map(like => ({
+          id: like._id,
+          postId: like.postId,
+          authorId: like.authorId._id,
+          }))
+      },
     comments: {
       count: data.post.commentsCount,
       list: data.comments.map(comment => ({
@@ -34,7 +38,7 @@ const normalizePost = (data) => {
 export default normalizePost;
 
 export const list = data => {
-  console.log(data, Array.isArray(data));
+ /* console.log(data, Array.isArray(data));*/
   return data.posts.map(item => normalizePost(item))
 }
 

@@ -5,6 +5,7 @@ const normalizeComment = (data) => {
         authorId: data.authorId,
         textComment: data.textComment,
         createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
     };
 }
 

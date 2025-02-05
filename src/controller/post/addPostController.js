@@ -9,9 +9,8 @@ export default async (req,res) => {
             data.image = `/public/images/${req.file.filename}`;
         }
 
-        const result = await addPost(data) // promise
+        const result = await addPost(data)
         res.status(201).json(postNormalizer(result));
-
         /*res.status(201).json(result);*/
     } catch (error) {
         console.log(error.message + " - Response Status: " + error.status);

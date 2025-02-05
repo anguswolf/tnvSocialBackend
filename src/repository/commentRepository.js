@@ -6,8 +6,6 @@ import mongoose from "mongoose";
 const addComment = async (data) => {
     try {
         const { authorId, textComment, postId } = data;
-        console.log(authorId, textComment, postId);
-
         const postExists = await postModel.findById(postId);
         if (!postExists) {
             return { success: false, message: "Post not found" };
@@ -96,11 +94,6 @@ const removeComment = async (postId, commentId) => {
         return { success: false, message: "Errore nell'eliminazione del commento", error };
     }
 };
-
-
-// Esempio di utilizzo:
-// deleteComment("65a1b3c4d5e6f7g8h9i0j1k2", "78b1c2d3e4f5g6h7i8j9k0l1");
-
 
 export default {
     addComment,

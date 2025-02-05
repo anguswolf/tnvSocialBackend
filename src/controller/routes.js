@@ -14,21 +14,27 @@ import addPostController from './post/addPostController.js'
 import retrievePostController from './post/retrievePostController.js'
 import listPostController from './post/listPostController.js'
 /**
+ * COMMENT CONTROLLERS
+ */
+import addCommentController from "./comment/addCommentController.js";
+import updateCommentController from "./comment/updateCommentController.js";
+import removeCommentController from "./comment/removeCommentController.js";
+/**
  * USER CONTROLLERS
 */
 import createUserController from './user/createUserController.js'
 import checkUserMailController from './user/checkUserMailController.js'
 import loginController from './user/loginController.js';
+import updateUserPasswordController from "./user/updateUserPasswordController.js";
+/**
+ * LIKE CONTROLLERS
+ */
+import toggleLikeController from "./like/toggleLikeController.js";
 /**
  * MIDDLEWARES
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
 import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
-import updateUserPasswordController from "./user/updateUserPasswordController.js";
-import toggleLikeController from "./post/toggleLikeController.js";
-import addCommentController from "./comment/addCommentController.js";
-import updateCommentController from "./comment/updateCommentController.js";
-import removeCommentController from "./comment/removeCommentController.js";
 import uploadFileToServer from "../middleware/uploadFileToServer.js";
 
 
@@ -46,11 +52,11 @@ const setup = (app) => {
     app.get('/post/page/:pageId', listPostController);
 
     /* LIKE API */
-    app.post('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController); //TODO fare tabella separata per i like
+    app.put('/post/:id/toggleLike',checkAuthorizationMiddleware, toggleLikeController);
 
     /* COMMENT API */
     app.post('/post/:id/comment/',checkAuthorizationMiddleware, createCommentValidator, addCommentController);
-    app.patch('/post/:id/comment/:commentId/',checkAuthorizationMiddleware, createCommentValidator, updateCommentController); //TODO aggiornare POSTID??  contatore ???
+    app.patch('/post/:id/comment/:commentId/',checkAuthorizationMiddleware, createCommentValidator, updateCommentController); //TODO post/:id superfluo ?
     app.delete('/post/:id/comment/:commentId',checkAuthorizationMiddleware, removeCommentController);
 
     app.use((err, req, res, next) => {

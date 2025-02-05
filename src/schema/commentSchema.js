@@ -15,9 +15,12 @@ const commentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    createdAt: {
-        type: Date,
-        default: Date.now,
     },
-});
+    {
+        timestamps: {
+            createdAt: 'createdAt',
+            updatedAt: 'updatedAt',
+            writeConcern: {w: 1, wtimeout: 2000},
+        }
+    });
 export const commentModel =mongoose.model('comments', commentSchema);

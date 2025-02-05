@@ -7,12 +7,12 @@ const postSchema = new Schema({
     image: {
         type: String,
     },
-    likes: [
+  /*  likes: [
         {
             type: Schema.Types.ObjectId,
             ref: "users",
         },
-    ],
+    ],*/
     likesCount: {
         type: Number,
         default: 0,
