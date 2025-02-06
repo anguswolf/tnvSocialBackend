@@ -3,6 +3,7 @@ export default (user) => {
       email: user.email,
       displayName: user.displayName,
       displaySurname: user.displaySurname,
+      avatar: user.avatar,
     }
     if(user.accessToken) {
       out.accessToken = user.accessToken;

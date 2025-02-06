@@ -35,7 +35,7 @@ import toggleLikeController from "./like/toggleLikeController.js";
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
 import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
-import uploadFileToServer from "../middleware/uploadFileToServer.js";
+import uploadFileToServer from "../middleware/uploadFileToServer.js"; //TODO Check Dimension file image
 
 
 const setup = (app) => {
@@ -47,7 +47,7 @@ const setup = (app) => {
     app.post('/user/login', loginValidator, loginController)
 
     /* POST API */
-    app.post('/post',checkAuthorizationMiddleware, uploadFileToServer.single('image'), createPostValidator, addPostController);
+    app.post('/post',checkAuthorizationMiddleware, uploadFileToServer.single('image'), createPostValidator, addPostController);//TODO Check Dimension file image
     app.get('/post/:id', retrievePostController);
     app.get('/post/page/:pageId', listPostController);
 
