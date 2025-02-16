@@ -1,5 +1,6 @@
 export default (user) => {
     const out = {
+      id: user._id,
       email: user.email,
       displayName: user.displayName,
       displaySurname: user.displaySurname,

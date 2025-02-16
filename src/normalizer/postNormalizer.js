@@ -15,7 +15,7 @@ const normalizePost = (data) => {
       count: data.post.likesCount,
       list: data.likes.map(like => ({
           id: like._id,
-          postId: like.postId,
+          /*postId: like.postId,*/
           authorId: like.authorId._id,
           }))
       },
