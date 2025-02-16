@@ -5,7 +5,7 @@ const userStatus = {
 }
 
 const postConfig = {
-  postPerPage: 3,
+  postPerPage: 25,
 }
 
 
