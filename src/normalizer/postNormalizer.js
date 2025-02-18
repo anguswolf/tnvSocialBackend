@@ -10,6 +10,7 @@ const normalizePost = (data) => {
       id: data.post.ownerId._id,
       name: data.post.ownerId.displayName,
       surname: data.post.ownerId.displaySurname,
+      avatar: data.post.ownerId.avatar,
     },
     likes: {
       count: data.post.likesCount,
@@ -27,6 +28,7 @@ const normalizePost = (data) => {
             id: comment.authorId._id,
             name: comment.authorId.displayName,
             surname: comment.authorId.displaySurname,
+            avatar: comment.authorId.avatar,
             },
             text: comment.textComment,
             createdAt: comment.createdAt,

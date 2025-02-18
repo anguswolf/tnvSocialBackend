@@ -65,7 +65,7 @@ const listPosts = async (userId, pageId) => {
     const postsWithCommentsAndLikes = await Promise.all(posts.map(async (post) => {
         const comments = await commentModel
               .find({ postId: post._id })
-              .populate('authorId', 'displayName displaySurname email')
+              .populate('authorId', 'displayName displaySurname email avatar')
               .sort({ createdAt: -1 })
               .lean();
 
