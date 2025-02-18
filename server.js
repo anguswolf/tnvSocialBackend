@@ -9,6 +9,7 @@ const port = 8000;
 
 app.use(express.json());
 app.use('/public/images',express.static('public/images'));
+app.use('/public/avatars',express.static('public/avatars'));
 app.use(cors({ origin: 'http://localhost:5173' }));
 
 connectionToDb().then(() => {
