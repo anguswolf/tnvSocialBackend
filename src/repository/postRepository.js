@@ -53,12 +53,12 @@ const listPosts = async (userId, pageId) => {
     const posts = await postModel
         .find()
         .populate('ownerId', 'displayName displaySurname avatar')
-        .skip(skip) // Salta i post delle pagine precedenti
+        .sort({ createdAt: -1 })
+        .skip(skip)
         .limit(pageSize) //
         .lean();
 
     if (!posts || posts.length === 0) {
-      //return res.status(404).json({ success: false, message: "Nessun post trovato" });
       return { success: true, posts: [] };
     }
 
