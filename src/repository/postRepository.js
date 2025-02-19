@@ -22,7 +22,7 @@ const retrievePost = async (id) => {
   try {
     const post = await postModel
         .findById(id)
-        .populate('ownerId', 'displayName displaySurname'); // Popola i dati dell'owner
+        .populate('ownerId', 'displayName displaySurname avatar'); // Popola i dati dell'owner
 
     if (!post) {
       return { success: false, message: "Post non trovato" };
@@ -30,7 +30,7 @@ const retrievePost = async (id) => {
 
     const comments = await commentModel
         .find({ postId: id })
-        .populate('authorId', 'displayName displaySurname email')
+        .populate('authorId', 'displayName displaySurname email avatar')
         .sort({ createdAt: -1 });
 
     const likes = await likeModel
@@ -52,7 +52,7 @@ const listPosts = async (userId, pageId) => {
   try {
     const posts = await postModel
         .find()
-        .populate('ownerId', 'displayName displaySurname')
+        .populate('ownerId', 'displayName displaySurname avatar')
         .skip(skip) // Salta i post delle pagine precedenti
         .limit(pageSize) //
         .lean();
