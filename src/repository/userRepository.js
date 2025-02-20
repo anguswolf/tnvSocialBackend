@@ -99,6 +99,14 @@ const confirmRegistration = async (id, token) => {
     return result.toJSON({versionKey:false})
   }
 
+  const getById = async (id) => {
+  const result = await userModel.findOne({_id: id, status: userStatus.active})
+    if(!result) {
+      throw new LoginException('User not found', 100102)
+    }
+    return result.toJSON({versionKey:false})
+  }
+
   const checkEmailExists = async (email) => {
     const result = await userModel.findOne({email:email})
     if (!result) {
@@ -114,5 +122,6 @@ const confirmRegistration = async (id, token) => {
     confirmRegistration,
     getByEmail,
     checkEmailExists,
-    updateUserPassword
+    updateUserPassword,
+    getById
   }

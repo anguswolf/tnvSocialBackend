@@ -35,7 +35,8 @@ import toggleLikeController from "./like/toggleLikeController.js";
  */
 import checkAuthorizationMiddleware from '../middleware/checkAuthorizationMiddleware.js'
 import updateTokenAndSendMailController from "./user/updateTokenAndSendMailController.js";
-import uploadFileToServer from "../middleware/uploadFileToServer.js"; //TODO Check Dimension file image
+import uploadFileToServer from "../middleware/uploadFileToServer.js";
+import refreshTokenController from "./user/refreshTokenController.js"; //TODO Check Dimension file image
 
 
 const setup = (app) => {
@@ -45,6 +46,7 @@ const setup = (app) => {
     app.post('/user/resetPassword', updateTokenAndSendMailController);
     app.patch('/user/:id/updatePassword/', updatePasswordValidator, updateUserPasswordController);
     app.post('/user/login', loginValidator, loginController)
+    app.post('/user/refreshToken', checkAuthorizationMiddleware, refreshTokenController)
 
     /* POST API */
     app.post('/post',checkAuthorizationMiddleware, uploadFileToServer.single('image'), createPostValidator, addPostController);//TODO Check Dimension file image

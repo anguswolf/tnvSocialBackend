@@ -21,7 +21,7 @@ const buildRegistrationLink = (id, token) => {
 
 const updateTokenAndSendMail = async (content) => {
 	let result
-	if (userRepo.checkEmailExists(content.email)) {
+	if (await userRepo.checkEmailExists(content.email)) {
 		  content.updatingToken = cryptoUtils.generateUniqueCode(10)
 		  result =  await userRepo.update(content);
 		  await sendRegistrationMail(content.email,
@@ -72,9 +72,17 @@ const sendRegistrationMail = async (email, link) => {
 	const user =  await userRepo.getByEmail(email);
   
 	if (!cryptoUtils.compare(password, user.salt, user.password)) {
-	  /*throw new UnauthorizedException('Unauthorized', 100201)*/
 		throw new LoginException('Email o password non valide', 100201)
 	}
+	const {accessToken, refreshToken} = cryptoUtils.generateTokens(user)
+	user.accessToken = accessToken
+	user.refreshToken = refreshToken
+	return user;
+  }
+
+  const refreshToken = async (content) => {
+	const user = await userRepo.getById(content.userId);
+
 	const {accessToken, refreshToken} = cryptoUtils.generateTokens(user)
 	user.accessToken = accessToken
 	user.refreshToken = refreshToken
@@ -91,5 +99,6 @@ const sendRegistrationMail = async (email, link) => {
 	login,
 	checkEmailExists,
 	  updateUserPassword,
-	  updateTokenAndSendMail
+	  updateTokenAndSendMail,
+	  refreshToken
   }

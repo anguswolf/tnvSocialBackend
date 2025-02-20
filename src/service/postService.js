@@ -17,5 +17,4 @@ export {
  	retrievePost,
 	addPost,
 	listPosts,
-/*	toggleLike,*/
 }
