@@ -46,7 +46,7 @@ const setup = (app) => {
     app.post('/user/resetPassword', updateTokenAndSendMailController);
     app.patch('/user/:id/updatePassword/', updatePasswordValidator, updateUserPasswordController);
     app.post('/user/login', loginValidator, loginController)
-    app.post('/user/refreshToken', checkAuthorizationMiddleware, refreshTokenController)
+    app.get('/user/refreshToken', checkAuthorizationMiddleware, refreshTokenController)
 
     /* POST API */
     app.post('/post',checkAuthorizationMiddleware, uploadFileToServer.single('image'), createPostValidator, addPostController);//TODO Check Dimension file image
